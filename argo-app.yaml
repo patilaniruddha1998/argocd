@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-ui-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Lavanya-Balaji/k8s_terraform_mc
+    path: Week6/Argo-UI-Manifest
+    targetRevision: main
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo-manual-ui-app
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true

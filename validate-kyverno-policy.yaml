@@ -1,0 +1,126 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: deployment-guardrails
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+
+  # 🏷️ 1. Require labels
+  - name: require-labels
+    match:
+      resources:
+        kinds:
+          - Deployment
+    validate:
+      message: "Labels 'app' and 'env' are required"
+      pattern:
+        metadata:
+          labels:
+            app: "?*"
+            env: "?*"
+
+  # 🚫 2. Disallow root user
+  - name: disallow-root
+    match:
+      resources:
+        kinds:
+          - Deployment
+    validate:
+      message: "Containers must not run as root"
+      pattern:
+        spec:
+          template:
+            spec:
+              containers:
+                - securityContext:
+                    runAsNonRoot: true
+
+  # 🔐 3. Enforce security best practices
+  - name: enforce-security-context
+    match:
+      resources:
+        kinds:
+          - Deployment
+    validate:
+      message: "Security context must disable privilege escalation"
+      pattern:
+        spec:
+          template:
+            spec:
+              containers:
+                - securityContext:
+                    allowPrivilegeEscalation: false
+
+  # ❤️ 4. Require liveness probe
+  - name: require-liveness-probe
+    match:
+      resources:
+        kinds:
+          - Deployment
+    validate:
+      message: "Liveness probe is required"
+      pattern:
+        spec:
+          template:
+            spec:
+              containers:
+                - livenessProbe:
+                    httpGet:
+                      path: "?*"
+                      port: "?*"
+
+  # 💚 5. Require readiness probe
+  - name: require-readiness-probe
+    match:
+      resources:
+        kinds:
+          - Deployment
+    validate:
+      message: "Readiness probe is required"
+      pattern:
+        spec:
+          template:
+            spec:
+              containers:
+                - readinessProbe:
+                    httpGet:
+                      path: "?*"
+                      port: "?*"
+
+  # 💾 6. Require resource limits
+  - name: require-resources
+    match:
+      resources:
+        kinds:
+          - Deployment
+    validate:
+      message: "CPU and memory requests/limits are required"
+      pattern:
+        spec:
+          template:
+            spec:
+              containers:
+                - resources:
+                    requests:
+                      cpu: "?*"
+                      memory: "?*"
+                    limits:
+                      cpu: "?*"
+                      memory: "?*"
+
+  # 🖼️ 7. Disallow latest tag
+  - name: disallow-latest-tag
+    match:
+      resources:
+        kinds:
+          - Deployment
+    validate:
+      message: "Using 'latest' tag is not allowed"
+      pattern:
+        spec:
+          template:
+            spec:
+              containers:
+                - image: "!*:latest"

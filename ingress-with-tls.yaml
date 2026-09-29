@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-app
+  # annotations:
+  #   cert-manager.io/cluster-issuer: letsencrypt-dev
+  annotations:
+    cert-manager.io/cluster-issuer: selfsigned    
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - myapp.172.18.255.200.nip.io   # <-- change IP
+    secretName: my-tls-secret
+  rules:
+  - host: myapp.172.18.255.200.nip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: my-service
+            port:
+              number: 80
