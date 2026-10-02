@@ -44,6 +44,19 @@ kubectl rollout restart deployment argocd-dex-server -n argocd
   -p '{"spec":{"template":{"spec":{"containers":[{"name":"argocd-server","args":["argocd-server","--insecure"]}]}}}}'
 
 kubectl port-forward svc/argocd-server -n argocd 8080:443
+
+
+kubectl create secret generic argocd-repo-argocd \
+  -n argocd \
+  --from-literal=type=git \
+  --from-literal=url=https://github.com/patilaniruddha1998/argocd.git \
+  --from-literal=username=patilaniruddha1998 \
+  --from-literal=password=''
+
+
+  kubectl label secret argocd-repo-argocd \
+  -n argocd \
+  argocd.argoproj.io/secret-type=repository
 ```
 #  kubectl edit configmap argocd-cm -n argocd
 ```
