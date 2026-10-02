@@ -7,7 +7,7 @@ spec:
   project: sre-monitoring
   source:
     repoURL: https://github.com/patilaniruddha1998/prometheus-monitoring.git
-    path: k8s
+    path: .
     targetRevision: main
   destination:
     server: https://kubernetes.default.svc
