@@ -6,8 +6,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Lavanya-Balaji/k8s_terraform_mc
-    path: Week6/Argo-UI-Manifest
+    repoURL: https://github.com/patilaniruddha1998/argocd
+    path: Argo-UI-Manifest
     targetRevision: main
   destination:
     server: https://kubernetes.default.svc

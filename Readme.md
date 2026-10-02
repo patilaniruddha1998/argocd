@@ -1,21 +1,12 @@
-# Create Kind Cluster
 
-```
-cat <<EOF | kind create cluster --name argo --config=-
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-nodes:
-- role: control-plane
-- role: worker
-EOF
-```
 # Create namespace
 ```
 kubectl create namespace argocd
 ```
 # Install ArgoCD
 ```
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl apply --server-side -n argocd \
+  -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
 
 # Enable SSO 
