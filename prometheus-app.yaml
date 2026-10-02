@@ -4,7 +4,7 @@ metadata:
   name: prometheus
   namespace: argocd
 spec:
-  project: sre-monitoring
+  project: default
   source:
     repoURL: https://github.com/patilaniruddha1998/prometheus-monitoring.git
     path: .

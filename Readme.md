@@ -53,8 +53,32 @@ kubectl create secret generic argocd-repo-argocd \
   --from-literal=username=patilaniruddha1998 \
   --from-literal=password=''
 
+kubectl create secret generic sample-python-application-repo \
+  -n argocd \
+  --from-literal=type=git \
+  --from-literal=url=https://github.com/patilaniruddha1998/argocd.git \
+  --from-literal=username=patilaniruddha1998 \
+  --from-literal=password=''
+
+
+
+kubectl create secret generic prometeus-repo-argocd \
+  -n argocd \
+  --from-literal=type=git \
+  --from-literal=url=https://github.com/patilaniruddha1998/prometheus-monitoring.git \
+  --from-literal=username=patilaniruddha1998 \
+  --from-literal=password=''
+
 
   kubectl label secret argocd-repo-argocd \
+  -n argocd \
+  argocd.argoproj.io/secret-type=repository
+
+  kubectl label secret sample-python-application-repo\
+  -n argocd \
+  argocd.argoproj.io/secret-type=repository
+
+  kubectl label secret prometeus-repo-argocd\
   -n argocd \
   argocd.argoproj.io/secret-type=repository
 ```
